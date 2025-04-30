@@ -76,12 +76,12 @@ func main() {
 	concurrency := flag.Int64("concurrency", int64(runtime.NumCPU()), "Number of 'threads' to use")
 	flag.Parse()
 
-    // system info
+	// system info
 	if err := sysInfo(); err != nil {
 		log.Printf("[cpuinfo]: failed to get cpuinfo: %v", err)
 	}
 
-    // custom concurrency or not?
+	// custom concurrency or not?
 	if *concurrency != int64(runtime.NumCPU()) {
 		fmt.Printf("[tinybench]: setting custom concurrency to %d", *concurrency)
 	} else {
