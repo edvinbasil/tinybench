@@ -22,6 +22,7 @@ all: $(APP)
 	./$(APP)
 
 $(APP):
+build:
 	$(GO) build -o $(APP) $(MAIN)
 
 clean:
