@@ -11,7 +11,6 @@ import (
 )
 
 const TotalIterations = int64(100_000_000)
-const Concurrency = 8
 
 func computeRange(start, end int64) int64 {
 	result := int64(0)
@@ -35,17 +34,17 @@ func multiThreaded(concurrency int64) {
 	// divide total iterations to chunks
 	chunkSize := TotalIterations / concurrency
 
-	resultChan := make(chan int64, Concurrency)
+	resultChan := make(chan int64, concurrency)
 
 	var wg sync.WaitGroup
-	wg.Add(Concurrency)
+	wg.Add(int(concurrency))
 
 	startTime := time.Now()
 
-	for i := int64(0); i < Concurrency; i++ {
+	for i := int64(0); i < concurrency; i++ {
 		start := i * chunkSize
 		end := start + chunkSize
-		if i == Concurrency-1 {
+		if i == concurrency-1 {
 			end = TotalIterations
 		}
 		go func(start, end int64) {
@@ -59,7 +58,7 @@ func multiThreaded(concurrency int64) {
 	elapsed := endTime.Sub(startTime)
 
 	result := int64(0)
-	for i := int64(0); i < Concurrency; i++ {
+	for i := int64(0); i < concurrency; i++ {
 		result ^= <-resultChan
 	}
 
